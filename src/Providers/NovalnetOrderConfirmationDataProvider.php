@@ -26,6 +26,9 @@ use \Plenty\Modules\Authorization\Services\AuthHelper;
 use Plenty\Modules\Frontend\Session\Storage\Contracts\FrontendSessionStorageFactoryContract;
 use Novalnet\Services\PaymentService;
 use Novalnet\Services\TransactionService;
+use Plenty\Plugin\Http\Request;
+use Plenty\Plugin\Http\Response;
+use Plenty\Modules\Basket\Models\Basket;
 
 /**
  * Class NovalnetOrderConfirmationDataProvider
@@ -42,7 +45,7 @@ class NovalnetOrderConfirmationDataProvider
      * @param Arguments $arg
      * @return string
      */
-    public function call(Twig $twig, PaymentRepositoryContract $paymentRepositoryContract, $arg)
+    public function call(Twig $twig, PaymentRepositoryContract $paymentRepositoryContract, Request $request, Response $response, Basket $basket, $arg)
     {
         $paymentHelper = pluginApp(PaymentHelper::class);
         $paymentService = pluginApp(PaymentService::class);
@@ -53,6 +56,12 @@ class NovalnetOrderConfirmationDataProvider
         $barzahlenurl = '';
         $payments = $paymentRepositoryContract->getPaymentsByOrderId($order['id']);
         if (!empty ($order['id'])) {
+            $paymentHelper->logger('request', $request);
+            $paymentHelper->logger('request All', $request->all());
+            $paymentHelper->logger('response', $response);
+            $paymentHelper->logger('basket', $basket);
+            $paymentHelper->logger('payment', $payments);
+            
             foreach($payments as $payment)
             {
                 $properties = $payment->properties;
