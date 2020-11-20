@@ -61,6 +61,8 @@ class NovalnetOrderConfirmationDataProvider
             $paymentHelper->logger('response', $response);
             $paymentHelper->logger('basket', $basket);
             $paymentHelper->logger('payment', $payments);
+            $paymentHelper->logger('order', $order);
+            $paymentHelper->logger('arg', $arg);
             
             foreach($payments as $payment)
             {
